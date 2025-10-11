@@ -11,7 +11,7 @@ import {
     SidebarMenuItem,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { House, BookOpenText, Calendar, GraduationCap, CalendarDays } from 'lucide-react';
+import { House, BookOpenText, Calendar, GraduationCap, CalendarDays, School } from 'lucide-react';
 import { NavLink } from "react-router-dom"
 
 import type { LinkType } from "@/shared/models";
@@ -31,7 +31,18 @@ export function AppSidebar() {
 
             <Sidebar>
                 <div className="pl-4 py-5">
-                    <SidebarHeader></SidebarHeader>
+                    <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-4">
+                        <div className="my-auto relative">
+                            <School className="cursor-pointer school-icon transition-all
+                                duration-700 hover:scale-125 hover:stroke-blue-800" />
+                            {/* bg-gradient-to-r from-cyan-400 to-blue-600 */}
+                        </div>
+
+                        <div>
+                            <h2 className="font-semibold text-2xl">Дневник</h2>
+                            <p className="text-sm">оценок</p>
+                        </div>
+                    </SidebarHeader>
 
                     <SidebarContent>
                         <SidebarGroup className="p-0 text-sm">
