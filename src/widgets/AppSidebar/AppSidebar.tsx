@@ -15,6 +15,7 @@ import { House, BookOpenText, Calendar, GraduationCap, CalendarDays, School } fr
 import { NavLink } from "react-router-dom"
 
 import type { LinkType } from "@/shared/models";
+import { LogoutBtn } from "@/shared/ui/LogoutBtn";
 
 const links: LinkType[] = [
     { title: 'Главная', url: '/home', icon: House },
@@ -29,9 +30,9 @@ export function AppSidebar() {
         <div className="relative h-full">
             <SidebarTrigger className="absolute -right-9 top-4 cursor-pointer" />
 
-            <Sidebar>
+            <Sidebar className="relative">
                 <div className="pl-4 py-5">
-                    <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-4">
+                    <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-5">
                         <div className="my-auto relative">
                             <School className="cursor-pointer school-icon transition-all
                                 duration-700 hover:scale-125 hover:stroke-blue-800" />
@@ -65,7 +66,9 @@ export function AppSidebar() {
                         </SidebarGroup>
                     </SidebarContent>
 
-                    <SidebarFooter></SidebarFooter>
+                    <SidebarFooter className="absolute bottom-3 right-0 w-full pl-5 bg-sidebar">
+                        <LogoutBtn />
+                    </SidebarFooter>
                 </div>
             </Sidebar>
         </div>
