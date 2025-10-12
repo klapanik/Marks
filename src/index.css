@@ -9,7 +9,6 @@
         padding: 0;
         box-sizing: border-box;
         border-color: var(--border);
-        outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
     }
 }
 
