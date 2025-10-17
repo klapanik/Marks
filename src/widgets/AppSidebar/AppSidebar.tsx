@@ -30,11 +30,11 @@ export function AppSidebar() {
         <div className="relative h-full">
             <SidebarTrigger className="absolute -right-9 top-4 cursor-pointer" />
 
-            <Sidebar className="relative">
-                <div className="pl-4 py-5">
+            <Sidebar>
+                <div className="pl-4 py-5 relative h-full">
                     <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-5">
                         <div className="my-auto relative">
-                            <School className="cursor-pointer school-icon transition-all
+                            <School className="cursor-pointer transition-all
                                 duration-700 hover:scale-125 hover:stroke-blue-800" />
                             {/* bg-gradient-to-r from-cyan-400 to-blue-600 */}
                         </div>
@@ -46,7 +46,7 @@ export function AppSidebar() {
                     </SidebarHeader>
 
                     <SidebarContent>
-                        <SidebarGroup className="p-0 text-sm">
+                        <SidebarGroup className="p-0">
                             <SidebarGroupLabel>Навигация</SidebarGroupLabel>
 
                             <SidebarGroupContent className="pl-1">
@@ -66,7 +66,7 @@ export function AppSidebar() {
                         </SidebarGroup>
                     </SidebarContent>
 
-                    <SidebarFooter className="absolute bottom-3 right-0 w-full pl-5 bg-sidebar">
+                    <SidebarFooter className="absolute bottom-3 right-0 w-full pl-5">
                         <LogoutBtn />
                     </SidebarFooter>
                 </div>
