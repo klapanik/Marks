@@ -61,10 +61,7 @@ export function AppSidebar() {
             <Sidebar>
                 <div className="px-4 py-5 relative h-full">
                     <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-5">
-                        <div className="my-auto relative">
-                            <School className="cursor-pointer" />
-                            {/* bg-gradient-to-r from-cyan-400 to-blue-600 */}
-                        </div>
+                        <School className="my-auto cursor-pointer" />
 
                         <div>
                             <h2 className="font-semibold text-2xl">Дневник</h2>
