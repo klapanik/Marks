@@ -28,14 +28,14 @@ const links: LinkType[] = [
 export function AppSidebar() {
     return (
         <div className="relative h-full">
-            <SidebarTrigger className="absolute -right-9 top-4 cursor-pointer" />
+            <SidebarTrigger className=" transition-colors duration-300 hover:bg-smoky-white 
+                absolute -right-9 top-4 cursor-pointer" />
 
             <Sidebar>
-                <div className="pl-4 py-5 relative h-full">
+                <div className="px-4 py-5 relative h-full">
                     <SidebarHeader className="w-[70%] pl-4 flex-row justify-between mb-5">
                         <div className="my-auto relative">
-                            <School className="cursor-pointer transition-all
-                                duration-700 hover:scale-125 hover:stroke-blue-800" />
+                            <School className="cursor-pointer" />
                             {/* bg-gradient-to-r from-cyan-400 to-blue-600 */}
                         </div>
 
