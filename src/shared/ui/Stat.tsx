@@ -11,10 +11,11 @@ export function Stat(props: Props) {
     const { title, number, subtext } = props;
 
     return (
-        <div className="text-smoky-black bg-background border-smoky-white rounded-lg shadow-sm p-6">
+        <div className="text-smoky-black bg-primary-background border-smoky-white 
+            rounded-lg shadow-sm p-6">
             <div className="w-full flex justify-between mb-2">
                 <h3 className="text-sm my-auto leading-3">{title}</h3>
-                <props.icon size={16} className="my-auto"/>
+                <props.icon size={16} className="my-auto" />
             </div>
 
             <p className="text-2xl font-bold">{number}</p>
