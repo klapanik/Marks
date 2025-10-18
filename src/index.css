@@ -16,11 +16,10 @@
     --radius: 0.625rem;
 
     --white: #ffffff;
-    --black: #0a0a0a;
     --smoky-white: #f3f4f6;
 
     --primary: #7c3aed;
-    --primary-foreground: oklch(0.145 0 0);
+    --primary-foreground: #0a0a0a;
 
     --background: var(--primary);
     --foreground: var(--white);

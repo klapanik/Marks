@@ -6,10 +6,13 @@ import { Outlet } from "react-router-dom";
 export function RootLayout() {
     return (
         <SidebarProvider>
-            <div>
-                <AppHeader />
+            <div className="flex w-full">
                 <AppSidebar />
-                <Outlet />
+
+                <div className="flex w-full">
+                    <AppHeader />
+                    <Outlet />
+                </div>
             </div>
         </SidebarProvider>
     )
