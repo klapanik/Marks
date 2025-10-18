@@ -11,7 +11,10 @@ export function RootLayout() {
 
                 <div className="w-full">
                     <AppHeader />
-                    <Outlet />
+
+                    <div className="p-6">
+                        <Outlet />
+                    </div>
                 </div>
             </div>
         </SidebarProvider>
