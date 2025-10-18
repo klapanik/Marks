@@ -9,7 +9,7 @@ export function RootLayout() {
             <div className="flex w-full">
                 <AppSidebar />
 
-                <div className="flex w-full">
+                <div className="w-full">
                     <AppHeader />
                     <Outlet />
                 </div>
