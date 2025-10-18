@@ -1,0 +1,29 @@
+.flowtext {
+    background: linear-gradient(90deg, #7c3aed, #8b5cf6, #06b6d4, #0ea5e9, #4f46e5);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textflow 5s linear infinite;
+}
+
+@keyframes textflow {
+    from {
+        background-position: 0% center
+    }
+
+    to {
+        background-position: 200% center
+    }
+}
+
+.gradient-block {
+    box-shadow: 0 4px 20px -2px #7c3aed3f;
+    background: linear-gradient(125deg, var(--card) 90%, var(--muted));
+}
+
+.gradient-block:hover {
+    box-shadow: 0 4px 20px -2px #7c3aed88;
+    background: linear-gradient(125deg, var(--card) 80%, var(--muted));
+    scale: 1.01;
+}
