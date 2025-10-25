@@ -11,7 +11,7 @@ export function Stat(props: Props) {
     const { title, number, subtext } = props;
 
     return (
-        <div className="text-smoky-black bg-primary-background border-smoky-white 
+        <div className="text-smoky-black bg-smoky-white border-smoky-white 
             rounded-lg shadow-sm p-6">
             <div className="w-full flex justify-between mb-2">
                 <h3 className="text-sm my-auto leading-3">{title}</h3>
