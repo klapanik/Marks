@@ -4,7 +4,7 @@ export function TodaysSchedule({ scheduleType }: { scheduleType: 'secondary' | '
     const isLessonsToday = false;
 
     return (
-        <div className="bg-smoky-white border-smoky-white rounded-lg shadow-sm w-full p-6">
+        <div className="primary-block w-full">
             {isLessonsToday ?
                 <div>Schedule</div>
                 :
