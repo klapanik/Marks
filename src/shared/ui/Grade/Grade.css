@@ -1,0 +1,43 @@
+.quarter-grade {
+    border-width: 1px;
+    border-style: solid;
+    color: var(--smoky-black);
+}
+
+.grade-10,
+.grade-9 {
+    background-color: #dff1ed;
+    border-color: #ceede5;
+}
+
+.grade-8,
+.grade-7 {
+    background-color: #dee5f5;
+    border-color: #bdcdf3;
+}
+
+.grade-6 {
+    background-color: #f5efd1;
+    border-color: #f6eab3;
+}
+
+.grade-5 {
+    background-color: #eddbc6;
+    border-color: #e6b981;
+}
+
+.grade-4 {
+    background-color: #f4c8ba;
+    border-color: #f59b7e;
+}
+
+.grade-3,
+.grade-2,
+.grade-1 {
+    background-color: #f2c8c9;
+    border-color: #f2acad;
+}
+
+.actionBtn {
+    @apply bg-transparent border-none shadow-none hover:bg-transparent cursor-pointer
+}
