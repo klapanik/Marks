@@ -1,3 +1,5 @@
+import { AddNewSubject } from "./AddNewSubject/AddNewSubject";
+
 export function SubjectsPage() {
     return (
         <section>
@@ -7,7 +9,7 @@ export function SubjectsPage() {
             </div>
 
             {/* <YourSubjects /> */}
-            {/* <AddNewSubject /> */}
+            <AddNewSubject />
             {/* <BasicSubjects /> */}
         </section>
     )
