@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, type AddPrefixToKeys } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc, type AddPrefixToKeys } from 'firebase/firestore';
 import { db } from '../config';
 
 type FirebaseDataType = { [x: string]: unknown; } & AddPrefixToKeys<string, Record<string, unknown>>;
@@ -13,6 +13,17 @@ class Firestore {
             return docs;
         } catch (error) {
             throw new Error(`Error in document updating: ${error}`);
+        }
+    };
+
+    async getDocById(collectionName: string, docId: string) {
+        const docRef = doc(db, collectionName, docId);
+        const document = await getDoc(docRef);
+
+        if (document.exists()) {
+            return document.data();
+        } else {
+            console.error("Document is undefined");
         }
     };
 
