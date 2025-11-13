@@ -1,0 +1,1 @@
+export const BASIC_SUBJECT_COLLECTION_NAME = "basic-grades";
