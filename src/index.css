@@ -20,6 +20,7 @@
     --smoky-black: #030712;
 
     --primary: #7c3aed;
+    --primary-transparent: #e7e1f5;
     --primary-foreground: #0a0a0a;
 
     --background: var(--primary);
@@ -42,8 +43,8 @@
 
     --destructive: #ef4444;
 
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
+    --border: #d2c0f3;
+    --input: #d2c0f3;
     --ring: #e5e7eb;
 
     --chart-1: oklch(0.646 0.222 41.116);
@@ -72,6 +73,7 @@
     --color-popover: var(--popover);
     --color-popover-foreground: var(--popover-foreground);
     --color-primary: var(--primary);
+    --color-primary-transparent: var(--primary-transparent);
     --color-primary-foreground: var(--primary-foreground);
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);

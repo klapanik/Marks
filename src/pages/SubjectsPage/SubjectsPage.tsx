@@ -3,6 +3,7 @@ import { AddNewSubject } from "./AddNewSubject/AddNewSubject";
 import { firestoreService } from "@/services/firebase/firestore";
 import type { DocumentData } from "firebase/firestore";
 import { BASIC_SUBJECT_COLLECTION_NAME } from "@/services/firebase/collections/names";
+import { BasicSubjects } from "./BasicSubjects/BasicSubjects";
 
 export function SubjectsPage() {
     const [basicSubjects, setBasicSubjects] = useState<DocumentData[]>();
@@ -27,7 +28,7 @@ export function SubjectsPage() {
 
             {/* <YourSubjects /> */}
             <AddNewSubject />
-            {/* <BasicSubjects basicSubjects={basicSubjects} /> */}
+            <BasicSubjects basicSubjects={basicSubjects} />
         </section>
     )
 }
