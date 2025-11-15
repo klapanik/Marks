@@ -13,6 +13,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { ContinueWithGoogle } from '@/shared/ui/ContinueWithGoogle';
 
 type Props = {
     onSubmit: SubmitHandler<LoginFormType>,
@@ -29,7 +30,7 @@ export function LoginForm({ onSubmit }: Props) {
 
     return (
         <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 mb-2'>
                 <FormField
                     control={control}
                     name="email"
@@ -68,6 +69,9 @@ export function LoginForm({ onSubmit }: Props) {
 
                 <Button type="submit" disabled={isSubmitting} className='text-white w-full cursor-pointer'>Войти</Button>
             </form>
+
+            <ContinueWithGoogle />
         </Form>
+
     )
 }
