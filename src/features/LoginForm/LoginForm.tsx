@@ -38,9 +38,8 @@ export function LoginForm({ onSubmit }: Props) {
                             <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input
-                                    className='primary-input'
+                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
                                     placeholder="your@email.com"
-                                    required={true}
                                     {...field}
                                 />
                             </FormControl>
@@ -57,9 +56,8 @@ export function LoginForm({ onSubmit }: Props) {
                             <FormLabel>Пароль</FormLabel>
                             <FormControl>
                                 <Input
-                                    className='primary-input'
+                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
                                     placeholder="Введите пароль"
-                                    required={true}
                                     {...field}
                                 />
                             </FormControl>

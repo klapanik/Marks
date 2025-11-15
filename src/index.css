@@ -141,6 +141,9 @@
 }
 
 .primary-input {
-    @apply focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-2 
-    selection:text-white invalid:focus-visible:ring-destructive bg-white mt-1
+    @apply focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-2 selection:text-white bg-white mt-1
+}
+
+.primary-input.invalid {
+    @apply focus-visible:ring-destructive
 }
