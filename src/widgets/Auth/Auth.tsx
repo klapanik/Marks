@@ -1,7 +1,13 @@
 import { BookOpen, GraduationCap } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LoginForm } from "@/features/LoginForm/LoginForm";
+import type { LoginFormType } from "@/features/LoginForm/zod";
 
 export function Auth() {
+    function onLoginFromSubmit(data: LoginFormType) {
+        console.log('data:', data);
+    }
+
     return (
         <section className="mx-auto w-[448px] py-4">
             <div className="w-full flex flex-col items-center mb-8">
@@ -23,12 +29,12 @@ export function Auth() {
                 <div className="w-full">
                     <Tabs defaultValue="login">
                         <TabsList className="w-full flex gap-4">
-                            <TabsTrigger value="login" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Account</TabsTrigger>
-                            <TabsTrigger value="register" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Password</TabsTrigger>
+                            <TabsTrigger value="login" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Войти</TabsTrigger>
+                            <TabsTrigger value="register" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Регистрация</TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="login">
-                            <div>login</div>
+                            <LoginForm onSubmit={onLoginFromSubmit} />
                         </TabsContent>
 
                         <TabsContent value="register">
