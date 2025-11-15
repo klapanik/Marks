@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { firebaseAuthService } from "@/services/firebase/auth"
+import { useNavigate } from "react-router-dom";
 
 export function ContinueWithGoogle() {
+    const navigate = useNavigate();
+
     async function signInWithGoogle() {
         await firebaseAuthService.signInWithGoogle();
+        navigate('/');
     }
 
     return (

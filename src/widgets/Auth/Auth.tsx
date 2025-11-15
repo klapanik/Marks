@@ -2,9 +2,12 @@ import { BookOpen, GraduationCap } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/features/LoginForm/LoginForm";
 import type { LoginFormType } from "@/features/LoginForm/zod";
-import { firebaseAuthService } from "@/services/firebase/auth"; 
+import { firebaseAuthService } from "@/services/firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export function Auth() {
+    const navigate = useNavigate();
+
     async function onLoginFromSubmit(data: LoginFormType) {
         if (!data || !data.password || !data.email) {
             return;
@@ -12,6 +15,7 @@ export function Auth() {
 
         try {
             await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
+            navigate('/');
         } catch (error) {
             alert(error);
             // Todo: add normal alert
