@@ -4,19 +4,22 @@ import { AppSidebar } from "@/widgets/AppSidebar/AppSidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/services/firebase/config";
+import { useEffect } from "react";
 
 export function RootLayout() {
     const navigate = useNavigate();
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const uid = user.uid;
-            console.log(uid);
-            navigate('/');
-        } else {
-            navigate('/auth');
-        }
-    });
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const uid = user.uid;
+                console.log(uid);
+                navigate('/');
+            } else {
+                navigate('/auth');
+            }
+        });
+    }, [navigate])
 
     return (
         <SidebarProvider>
