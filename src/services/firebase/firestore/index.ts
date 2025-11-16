@@ -37,10 +37,14 @@ class Firestore {
         }
     }
 
-    async updateDoc(collectionName: string, docId: string, updatedData: FirebaseDataType) {
+    async updateDoc(collectionName: string, docId: string, updatedData: unknown) {
         const docRef = doc(db, collectionName, docId);
 
         try {
+            if (!updatedData) {
+                return
+            }
+
             await updateDoc(docRef, updatedData);
         } catch (error) {
             throw new Error(`Error in document updating: ${error}`);
