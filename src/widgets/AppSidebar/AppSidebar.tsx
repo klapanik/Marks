@@ -25,7 +25,6 @@ import { NavLink } from "react-router-dom";
 
 import type { LinkType } from "@/shared/models";
 import { LogoutBtn } from "@/shared/ui/LogoutBtn";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const links: LinkType[] = [
     { title: 'Главная', url: '/home', icon: House },
@@ -38,25 +37,23 @@ const links: LinkType[] = [
 export function AppSidebar() {
     return (
         <div className="relative h-full">
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <SidebarTrigger className="transition-colors duration-300 hover:bg-smoky-white 
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <SidebarTrigger className="transition-colors duration-300 hover:bg-smoky-white 
                         absolute -right-9 top-4 cursor-pointer" />
-                    </TooltipTrigger>
-                    <TooltipContent
-                        side="left"
-                        className="flex items-center gap-2 p-2"
-                    >
-                        <span className="text-sm text-primary">Боковая панель</span>
-                        <KbdGroup>
-                            <Kbd>Ctrl</Kbd>
-                            <span>+</span>
-                            <Kbd>B</Kbd>
-                        </KbdGroup>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
+                </TooltipTrigger>
+                <TooltipContent
+                    side="left"
+                    className="flex items-center gap-2 p-2"
+                >
+                    <span className="text-sm text-primary">Боковая панель</span>
+                    <KbdGroup>
+                        <Kbd>Ctrl</Kbd>
+                        <span>+</span>
+                        <Kbd>B</Kbd>
+                    </KbdGroup>
+                </TooltipContent>
+            </Tooltip>
 
             <Sidebar>
                 <div className="px-4 py-5 relative h-full">
