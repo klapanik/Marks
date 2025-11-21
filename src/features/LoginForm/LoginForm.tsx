@@ -26,8 +26,6 @@ export function LoginForm({ onSubmit }: Props) {
 
     const { handleSubmit, formState: { errors, isSubmitting }, control } = form;
 
-    console.log('errors:', errors);
-
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 mb-2'>
@@ -39,7 +37,7 @@ export function LoginForm({ onSubmit }: Props) {
                             <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input
-                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
+                                    className={`primary-input ${errors.email ? 'invalid' : ''}`}
                                     placeholder="your@email.com"
                                     {...field}
                                 />
@@ -57,7 +55,7 @@ export function LoginForm({ onSubmit }: Props) {
                             <FormLabel>Пароль</FormLabel>
                             <FormControl>
                                 <Input
-                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
+                                    className={`primary-input ${errors.password ? 'invalid' : ''}`}
                                     placeholder="Введите пароль"
                                     {...field}
                                 />
@@ -72,6 +70,5 @@ export function LoginForm({ onSubmit }: Props) {
 
             <ContinueWithGoogle />
         </Form>
-
     )
 }
