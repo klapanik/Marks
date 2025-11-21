@@ -11,15 +11,26 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import { Input } from "@/components/ui/input";
 import { ContinueWithGoogle } from '@/shared/ui/ContinueWithGoogle';
+
+import { useState } from 'react';
 
 type Props = {
     onSubmit: SubmitHandler<RegisterFormType>,
 }
 
 export function RegisterForm({ onSubmit }: Props) {
+    const [open, setOpen] = useState(false);
+
     const form = useForm<RegisterFormType>({
         resolver: zodResolver(registerFormSchema)
     });
@@ -92,9 +103,21 @@ export function RegisterForm({ onSubmit }: Props) {
                         name="letter"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Буква</FormLabel>
+                                <FormLabel>
+                                    <span>Буква</span>
+
+                                    <Tooltip open={open} onOpenChange={setOpen}>
+                                        <TooltipTrigger asChild>
+                                            <span className='relative -left-1.5 -top-0.5 bg-primary rounded-full size-1'></span>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top">Необязательное поле</TooltipContent>
+                                    </Tooltip>
+                                </FormLabel>
+
                                 <FormControl>
                                     <Input
+                                        onFocus={() => { setOpen(true) }}
+                                        onBlurCapture={() => { setOpen(false) }}
                                         className={`primary-input ${errors.letter ? 'invalid' : ''}`}
                                         placeholder="Буква"
                                         {...field}
