@@ -4,11 +4,13 @@ import { LoginForm } from "@/features/LoginForm/LoginForm";
 import type { LoginFormType } from "@/features/LoginForm/zod";
 import { firebaseAuthService } from "@/services/firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { RegisterForm } from "@/features/RegisterForm/RegisterForm";
+import type { RegisterFormType } from "@/features/RegisterForm/zod";
 
 export function Auth() {
     const navigate = useNavigate();
 
-    async function onLoginFromSubmit(data: LoginFormType) {
+    async function onLoginFormSubmit(data: LoginFormType) {
         if (!data || !data.password || !data.email) {
             return;
         }
@@ -20,6 +22,14 @@ export function Auth() {
             alert(error);
             // Todo: add normal alert
         }
+    }
+
+    async function onRegisterFormSubmit(data: RegisterFormType) {
+        if (!data) {
+            return;
+        }
+
+        console.log(data);
     }
 
     return (
@@ -48,11 +58,11 @@ export function Auth() {
                         </TabsList>
 
                         <TabsContent value="login">
-                            <LoginForm onSubmit={onLoginFromSubmit} />
+                            <LoginForm onSubmit={onLoginFormSubmit} />
                         </TabsContent>
 
                         <TabsContent value="register">
-                            <div>register</div>
+                            <RegisterForm onSubmit={onRegisterFormSubmit} />
                         </TabsContent>
                     </Tabs>
                 </div>
