@@ -6,6 +6,7 @@ import { firebaseAuthService } from "@/services/firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "@/features/RegisterForm/RegisterForm";
 import type { RegisterFormType } from "@/features/RegisterForm/zod";
+import { firestoreService } from "@/services/firebase/firestore";
 
 export function Auth() {
     const navigate = useNavigate();
@@ -29,7 +30,23 @@ export function Auth() {
             return;
         }
 
-        console.log(data);
+        try {
+            const userData = await firebaseAuthService.createUserWithEmailAndPassword(data.email, data.password);
+            const uid = userData.user.uid;
+            console.log(uid);
+
+            await firestoreService.setDoc('users', uid, {
+                email: data.email,
+                name: data.name,
+                surname: data.surname,
+                form: data.form,
+                letter: data.letter,
+            })
+
+            navigate('/');
+        } catch (error) {
+            alert(error);
+        }
     }
 
     return (
