@@ -4,26 +4,21 @@ import { registerFormSchema, type RegisterFormType } from "./zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
+import { PasswordEye } from "@/shared/ui/PasswordEye";
 
 type Props = {
-    onSubmit: SubmitHandler<RegisterFormType>,
+    onSubmit: SubmitHandler<RegisterFormType>;
 };
 
 export function RegisterForm({ onSubmit }: Props) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
+    const [isPassword, setIsPassword] = useState(false);
 
     const form = useForm<RegisterFormType>({
         resolver: zodResolver(registerFormSchema),
@@ -67,9 +62,7 @@ export function RegisterForm({ onSubmit }: Props) {
                                 <FormLabel>Фамилия</FormLabel>
                                 <FormControl>
                                     <Input
-                                        className={`primary-input ${
-                                            errors.surname ? "invalid" : ""
-                                        }`}
+                                        className={`primary-input ${errors.surname ? "invalid" : ""}`}
                                         placeholder="Фамилия"
                                         {...field}
                                     />
@@ -116,17 +109,19 @@ export function RegisterForm({ onSubmit }: Props) {
                                         <TooltipTrigger asChild>
                                             <span className="relative -left-1.5 -top-0.5 bg-primary rounded-full size-1"></span>
                                         </TooltipTrigger>
-                                        <TooltipContent side="top">
-                                            Необязательное поле
-                                        </TooltipContent>
+                                        <TooltipContent side="top">Необязательное поле</TooltipContent>
                                     </Tooltip>
                                 </FormLabel>
 
                                 <FormControl>
                                     <Input
-                                        onFocus={() => { setTooltipOpen(true) }}
-                                        onBlurCapture={() => { setTooltipOpen(false) }}
-                                        className={`primary-input ${errors.letter ? 'invalid' : ''}`}
+                                        onFocus={() => {
+                                            setTooltipOpen(true);
+                                        }}
+                                        onBlurCapture={() => {
+                                            setTooltipOpen(false);
+                                        }}
+                                        className={`primary-input ${errors.letter ? "invalid" : ""}`}
                                         placeholder="Буква"
                                         {...field}
                                     />
@@ -164,12 +159,16 @@ export function RegisterForm({ onSubmit }: Props) {
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
                             <FormControl>
-                                <Input
-                                    className={`primary-input ${errors.password ? "invalid" : ""}`}
-                                    placeholder="Создайте пароль"
-                                    type="password" // todo: add eye for looking password
-                                    {...field}
-                                />
+                                <div className="flex gap-2">
+                                    <Input
+                                        className={`primary-input ${errors.password ? "invalid" : ""}`}
+                                        placeholder="Создайте пароль"
+                                        type={isPassword ? "password" : "text"}
+                                        {...field}
+                                    />
+
+                                    <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
+                                </div>
                             </FormControl>
                             <FormMessage>{errors.password?.message && ""}</FormMessage>
                         </FormItem>
@@ -185,5 +184,5 @@ export function RegisterForm({ onSubmit }: Props) {
                 </Button>
             </form>
         </Form>
-    )
+    );
 }
