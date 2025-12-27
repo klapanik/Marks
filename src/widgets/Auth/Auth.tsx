@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "@/features/RegisterForm/RegisterForm";
 import type { RegisterFormType } from "@/features/RegisterForm/zod";
 import { firestoreService } from "@/services/firebase/firestore";
+import { emailVerification } from "@/services/abstract/email_verification";
 
 export function Auth() {
     const navigate = useNavigate();
@@ -37,6 +38,10 @@ export function Auth() {
         if (!data) return;
 
         try {
+            const isEmailValid = await emailVerification(data.email);
+
+            if (!isEmailValid) throw new Error("Email is not valid, please enter your real email");
+
             const userData = await firebaseAuthService.createUserWithEmailAndPassword(
                 data.email,
                 data.password
@@ -102,7 +107,7 @@ export function Auth() {
                         </TabsContent>
 
                         <TabsContent value="register">
-                            <RegisterForm onSubmit={onRegisterFormSubmit}/>
+                            <RegisterForm onSubmit={onRegisterFormSubmit} />
                         </TabsContent>
                     </Tabs>
                 </div>
