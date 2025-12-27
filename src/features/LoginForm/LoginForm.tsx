@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function LoginForm({ onSubmit, signInWithGoogle }: Props) {
-    const [isPassword, setIsPassword] = useState(false);
+    const [isPassword, setIsPassword] = useState(true);
 
     const form = useForm<LoginFormType>({
         resolver: zodResolver(loginFormSchema),

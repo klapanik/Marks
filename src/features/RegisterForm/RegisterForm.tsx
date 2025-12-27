@@ -18,7 +18,7 @@ type Props = {
 
 export function RegisterForm({ onSubmit }: Props) {
     const [tooltipOpen, setTooltipOpen] = useState(false);
-    const [isPassword, setIsPassword] = useState(false);
+    const [isPassword, setIsPassword] = useState(true);
 
     const form = useForm<RegisterFormType>({
         resolver: zodResolver(registerFormSchema),
