@@ -29,7 +29,7 @@ type Props = {
 }
 
 export function RegisterForm({ onSubmit }: Props) {
-    const [open, setOpen] = useState(false);
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     const form = useForm<RegisterFormType>({
         resolver: zodResolver(registerFormSchema)
@@ -106,7 +106,7 @@ export function RegisterForm({ onSubmit }: Props) {
                                 <FormLabel>
                                     <span>Буква</span>
 
-                                    <Tooltip open={open} onOpenChange={setOpen}>
+                                    <Tooltip open={tooltipOpen} onOpenChange={setTooltipOpen}>
                                         <TooltipTrigger asChild>
                                             <span className='relative -left-1.5 -top-0.5 bg-primary rounded-full size-1'></span>
                                         </TooltipTrigger>
@@ -116,8 +116,8 @@ export function RegisterForm({ onSubmit }: Props) {
 
                                 <FormControl>
                                     <Input
-                                        onFocus={() => { setOpen(true) }}
-                                        onBlurCapture={() => { setOpen(false) }}
+                                        onFocus={() => { setTooltipOpen(true) }}
+                                        onBlurCapture={() => { setTooltipOpen(false) }}
                                         className={`primary-input ${errors.letter ? 'invalid' : ''}`}
                                         placeholder="Буква"
                                         {...field}

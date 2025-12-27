@@ -23,10 +23,10 @@ import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import { House, BookOpenText, Calendar, GraduationCap, CalendarDays, School } from 'lucide-react';
 import { NavLink } from "react-router-dom";
 
-import type { LinkType } from "@/shared/models";
+import type { NavLinkType } from "@/shared/models";
 import { LogoutBtn } from "@/shared/ui/LogoutBtn";
 
-const links: LinkType[] = [
+const links: NavLinkType[] = [
     { title: 'Главная', url: '/home', icon: House },
     { title: 'Предметы', url: '/subjects', icon: BookOpenText },
     { title: 'Расписание', url: '/schedule', icon: Calendar },
