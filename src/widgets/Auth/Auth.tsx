@@ -15,10 +15,7 @@ export function Auth() {
         if (!data) return;
 
         try {
-            await firebaseAuthService.signInWithEmailAndPassword(
-                data.email,
-                data.password
-            );
+            await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
             navigate("/");
         } catch (error) {
             alert(error);
@@ -27,15 +24,23 @@ export function Auth() {
         }
     }
 
+    async function signInWithGoogle() {
+        try {
+            await firebaseAuthService.signInWithGoogle();
+            navigate("/");
+        } catch (error) {
+            alert(error);
+        }
+    }
+
     async function onRegisterFormSubmit(data: RegisterFormType) {
         if (!data) return;
 
         try {
-            const userData =
-                await firebaseAuthService.createUserWithEmailAndPassword(
-                    data.email,
-                    data.password
-                );
+            const userData = await firebaseAuthService.createUserWithEmailAndPassword(
+                data.email,
+                data.password
+            );
 
             const uid = userData.user.uid;
             console.log(uid);
@@ -58,26 +63,18 @@ export function Auth() {
         <section className="mx-auto w-[448px] py-4">
             <div className="w-full flex flex-col items-center mb-8">
                 <GraduationCap className="bg-primary rounded-full p-3 size-14 text-white mb-4" />
-                <h1 className="w-auto text-3xl font-bold text-primary">
-                    Дневник Оценок
-                </h1>
-                <p className="text-muted-foreground">
-                    Ведите учет своих академических успехов
-                </p>
+                <h1 className="w-auto text-3xl font-bold text-primary">Дневник Оценок</h1>
+                <p className="text-muted-foreground">Ведите учет своих академических успехов</p>
             </div>
 
             <div className="w-full flex flex-col items-center primary-block">
                 <div className="mb-6">
                     <div className="flex">
                         <BookOpen className="size-5 my-auto mr-3" />
-                        <h2 className="text-2xl font-semibold">
-                            Добро пожаловать
-                        </h2>
+                        <h2 className="text-2xl font-semibold">Добро пожаловать</h2>
                     </div>
 
-                    <p className="text-muted-foreground">
-                        Войдите или создайте новый аккаунт
-                    </p>
+                    <p className="text-muted-foreground">Войдите или создайте новый аккаунт</p>
                 </div>
 
                 <div className="w-full">
@@ -98,11 +95,14 @@ export function Auth() {
                         </TabsList>
 
                         <TabsContent value="login">
-                            <LoginForm onSubmit={onLoginFormSubmit} />
+                            <LoginForm
+                                onSubmit={onLoginFormSubmit}
+                                signInWithGoogle={signInWithGoogle}
+                            />
                         </TabsContent>
 
                         <TabsContent value="register">
-                            <RegisterForm onSubmit={onRegisterFormSubmit} />
+                            <RegisterForm onSubmit={onRegisterFormSubmit}/>
                         </TabsContent>
                     </Tabs>
                 </div>

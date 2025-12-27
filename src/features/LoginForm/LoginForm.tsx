@@ -17,9 +17,10 @@ import { ContinueWithGoogle } from '@/shared/ui/ContinueWithGoogle';
 
 type Props = {
     onSubmit: SubmitHandler<LoginFormType>,
+    signInWithGoogle: () => void,
 }
 
-export function LoginForm({ onSubmit }: Props) {
+export function LoginForm({ onSubmit, signInWithGoogle }: Props) {
     const form = useForm<LoginFormType>({
         resolver: zodResolver(loginFormSchema)
     });
@@ -57,6 +58,7 @@ export function LoginForm({ onSubmit }: Props) {
                                 <Input
                                     className={`primary-input ${errors.password ? 'invalid' : ''}`}
                                     placeholder="Введите пароль"
+                                    type="password"
                                     {...field}
                                 />
                             </FormControl>
@@ -68,7 +70,7 @@ export function LoginForm({ onSubmit }: Props) {
                 <Button type="submit" disabled={isSubmitting} className='text-white w-full cursor-pointer'>Войти</Button>
             </form>
 
-            <ContinueWithGoogle />
+            <ContinueWithGoogle signInWithGoogle={signInWithGoogle} />
         </Form>
     )
 }
