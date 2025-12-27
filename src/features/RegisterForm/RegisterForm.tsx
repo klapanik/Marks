@@ -126,7 +126,7 @@ export function RegisterForm({ onSubmit }: Props) {
                                         {...field}
                                     />
                                 </FormControl>
-                                <FormMessage className={`${errors.letter?.message ? "min-h-5" : ""}`}>
+                                <FormMessage className={`${errors.form?.message ? "min-h-5" : ""}`}>
                                     {errors.letter?.message && ""}{" "}
                                 </FormMessage>
                             </FormItem>
@@ -158,18 +158,18 @@ export function RegisterForm({ onSubmit }: Props) {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
-                            <FormControl>
-                                <div className="flex gap-2">
+                            <div className="flex gap-2">
+                                <FormControl>
                                     <Input
                                         className={`primary-input ${errors.password ? "invalid" : ""}`}
                                         placeholder="Создайте пароль"
                                         type={isPassword ? "password" : "text"}
                                         {...field}
                                     />
+                                </FormControl>
 
-                                    <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
-                                </div>
-                            </FormControl>
+                                <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
+                            </div>
                             <FormMessage>{errors.password?.message && ""}</FormMessage>
                         </FormItem>
                     )}

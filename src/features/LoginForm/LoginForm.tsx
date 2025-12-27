@@ -56,18 +56,18 @@ export function LoginForm({ onSubmit, signInWithGoogle }: Props) {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
-                            <FormControl>
-                                <div className="flex gap-2">
+                            <div className="flex gap-2">
+                                <FormControl>
                                     <Input
                                         className={`primary-input ${errors.password ? "invalid" : ""}`}
                                         placeholder="Введите пароль"
                                         type="password"
                                         {...field}
                                     />
+                                </FormControl>
 
-                                    <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
-                                </div>
-                            </FormControl>
+                                <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
+                            </div>
                             <FormMessage>{errors.password?.message && ""}</FormMessage>
                         </FormItem>
                     )}
