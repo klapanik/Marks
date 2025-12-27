@@ -5,6 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/services/firebase/config";
 import { useEffect } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export function RootLayout() {
     const navigate = useNavigate();
@@ -22,18 +23,20 @@ export function RootLayout() {
     }, [navigate])
 
     return (
-        <SidebarProvider>
-            <div className="flex w-full">
-                <AppSidebar />
+        <TooltipProvider>
+            <SidebarProvider>
+                <div className="flex w-full">
+                    <AppSidebar />
 
-                <div className="w-full">
-                    <AppHeader />
+                    <div className="w-full">
+                        <AppHeader />
 
-                    <div className="p-6">
-                        <Outlet />
+                        <div className="p-6">
+                            <Outlet />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </SidebarProvider>
+            </SidebarProvider>
+        </TooltipProvider>
     )
 }

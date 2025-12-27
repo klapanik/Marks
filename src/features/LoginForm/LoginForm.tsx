@@ -1,36 +1,37 @@
-import { useForm } from 'react-hook-form';
-import type { SubmitHandler } from 'react-hook-form';
-import { loginFormSchema, type LoginFormType } from './zod';
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import { loginFormSchema, type LoginFormType } from "./zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { ContinueWithGoogle } from '@/shared/ui/ContinueWithGoogle';
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { ContinueWithGoogle } from "@/shared/ui/ContinueWithGoogle";
+import { PasswordEye } from "@/shared/ui/PasswordEye";
+
+import { useState } from "react";
 
 type Props = {
-    onSubmit: SubmitHandler<LoginFormType>,
-}
+    onSubmit: SubmitHandler<LoginFormType>;
+    signInWithGoogle: () => void;
+};
 
-export function LoginForm({ onSubmit }: Props) {
+export function LoginForm({ onSubmit, signInWithGoogle }: Props) {
+    const [isPassword, setIsPassword] = useState(false);
+
     const form = useForm<LoginFormType>({
-        resolver: zodResolver(loginFormSchema)
+        resolver: zodResolver(loginFormSchema),
     });
 
-    const { handleSubmit, formState: { errors, isSubmitting }, control } = form;
-
-    console.log('errors:', errors);
+    const {
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        control,
+    } = form;
 
     return (
         <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-5 mb-2'>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 mb-2">
                 <FormField
                     control={control}
                     name="email"
@@ -39,12 +40,12 @@ export function LoginForm({ onSubmit }: Props) {
                             <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input
-                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
+                                    className={`primary-input ${errors.email ? "invalid" : ""}`}
                                     placeholder="your@email.com"
                                     {...field}
                                 />
                             </FormControl>
-                            <FormMessage>{errors.email?.message && ''}</FormMessage>
+                            <FormMessage>{errors.email?.message && ""}</FormMessage>
                         </FormItem>
                     )}
                 />
@@ -55,23 +56,33 @@ export function LoginForm({ onSubmit }: Props) {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Пароль</FormLabel>
-                            <FormControl>
-                                <Input
-                                    className={`primary-input ${Object.keys(errors).length == 0 ? '' : 'invalid'}`}
-                                    placeholder="Введите пароль"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage>{errors.password?.message && ''}</FormMessage>
+                            <div className="flex gap-2">
+                                <FormControl>
+                                    <Input
+                                        className={`primary-input ${errors.password ? "invalid" : ""}`}
+                                        placeholder="Введите пароль"
+                                        type="password"
+                                        {...field}
+                                    />
+                                </FormControl>
+
+                                <PasswordEye isEyeOpen={isPassword} setIsEyeOpen={setIsPassword} />
+                            </div>
+                            <FormMessage>{errors.password?.message && ""}</FormMessage>
                         </FormItem>
                     )}
                 />
 
-                <Button type="submit" disabled={isSubmitting} className='text-white w-full cursor-pointer'>Войти</Button>
+                <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="text-white w-full cursor-pointer"
+                >
+                    Войти
+                </Button>
             </form>
 
-            <ContinueWithGoogle />
+            <ContinueWithGoogle signInWithGoogle={signInWithGoogle} />
         </Form>
-
-    )
+    );
 }

@@ -4,7 +4,8 @@ import { auth, googleProvider } from "../config";
 class FirebaseAuth {
     async createUserWithEmailAndPassword(email: string, password: string) {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userData = await createUserWithEmailAndPassword(auth, email, password);
+            return userData
         } catch (error) {
             throw new Error(`Error in signing in: ${error}`);
         }

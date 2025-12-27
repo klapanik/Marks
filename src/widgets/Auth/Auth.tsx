@@ -4,21 +4,63 @@ import { LoginForm } from "@/features/LoginForm/LoginForm";
 import type { LoginFormType } from "@/features/LoginForm/zod";
 import { firebaseAuthService } from "@/services/firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { RegisterForm } from "@/features/RegisterForm/RegisterForm";
+import type { RegisterFormType } from "@/features/RegisterForm/zod";
+import { firestoreService } from "@/services/firebase/firestore";
+import { emailVerification } from "@/services/abstract/email_verification";
 
 export function Auth() {
     const navigate = useNavigate();
 
-    async function onLoginFromSubmit(data: LoginFormType) {
-        if (!data || !data.password || !data.email) {
-            return;
-        }
+    async function onLoginFormSubmit(data: LoginFormType) {
+        if (!data) return;
 
         try {
             await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
-            navigate('/');
+            navigate("/");
         } catch (error) {
             alert(error);
             // Todo: add normal alert
+            // Todo: add loading
+        }
+    }
+
+    async function signInWithGoogle() {
+        try {
+            await firebaseAuthService.signInWithGoogle();
+            navigate("/");
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    async function onRegisterFormSubmit(data: RegisterFormType) {
+        if (!data) return;
+
+        try {
+            const isEmailValid = await emailVerification(data.email);
+
+            if (!isEmailValid) throw new Error("Email is not valid, please enter your real email");
+
+            const userData = await firebaseAuthService.createUserWithEmailAndPassword(
+                data.email,
+                data.password
+            );
+
+            const uid = userData.user.uid;
+            console.log(uid);
+
+            await firestoreService.setDoc("users", uid, {
+                email: data.email,
+                name: data.name,
+                surname: data.surname,
+                form: data.form,
+                letter: data.letter ?? "",
+            });
+
+            navigate("/");
+        } catch (error) {
+            alert(error);
         }
     }
 
@@ -43,20 +85,33 @@ export function Auth() {
                 <div className="w-full">
                     <Tabs defaultValue="login">
                         <TabsList className="w-full flex gap-4">
-                            <TabsTrigger value="login" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Войти</TabsTrigger>
-                            <TabsTrigger value="register" className="text-black data-[state=active]:bg-white w-full cursor-pointer">Регистрация</TabsTrigger>
+                            <TabsTrigger
+                                value="login"
+                                className="text-black data-[state=active]:bg-white w-full cursor-pointer"
+                            >
+                                Войти
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="register"
+                                className="text-black data-[state=active]:bg-white w-full cursor-pointer"
+                            >
+                                Регистрация
+                            </TabsTrigger>
                         </TabsList>
 
                         <TabsContent value="login">
-                            <LoginForm onSubmit={onLoginFromSubmit} />
+                            <LoginForm
+                                onSubmit={onLoginFormSubmit}
+                                signInWithGoogle={signInWithGoogle}
+                            />
                         </TabsContent>
 
                         <TabsContent value="register">
-                            <div>register</div>
+                            <RegisterForm onSubmit={onRegisterFormSubmit} />
                         </TabsContent>
                     </Tabs>
                 </div>
             </div>
         </section>
-    )
+    );
 }
