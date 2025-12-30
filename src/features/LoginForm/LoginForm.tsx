@@ -61,7 +61,7 @@ export function LoginForm({ onSubmit, signInWithGoogle }: Props) {
                                     <Input
                                         className={`primary-input ${errors.password ? "invalid" : ""}`}
                                         placeholder="Введите пароль"
-                                        type="password"
+                                        type={isPassword ? "password" : "text"}
                                         {...field}
                                     />
                                 </FormControl>
