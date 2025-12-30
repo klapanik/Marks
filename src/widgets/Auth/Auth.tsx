@@ -1,16 +1,25 @@
-import { BookOpen, GraduationCap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/features/LoginForm/LoginForm";
 import type { LoginFormType } from "@/features/LoginForm/zod";
-import { firebaseAuthService } from "@/services/firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { RegisterForm } from "@/features/RegisterForm/RegisterForm";
 import type { RegisterFormType } from "@/features/RegisterForm/zod";
+import { BookOpen, GraduationCap } from "lucide-react";
+
+import { firebaseAuthService } from "@/services/firebase/auth";
 import { firestoreService } from "@/services/firebase/firestore";
 import { emailVerification } from "@/services/abstract/email_verification";
 
+import { useAlertData } from "@/app/providers/AlertContext";
+
+import { triggerErrorAlert } from "./lib/triggerErrorAlert";
+
 export function Auth() {
     const navigate = useNavigate();
+
+    const alertContext = useAlertData();
+    const { setAlertData } = alertContext;
 
     async function onLoginFormSubmit(data: LoginFormType) {
         if (!data) return;
@@ -19,8 +28,9 @@ export function Auth() {
             await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
             navigate("/");
         } catch (error) {
-            alert(error);
-            // Todo: add normal alert
+            if (!(error instanceof Error)) return;
+            triggerErrorAlert(error, setAlertData);
+
             // Todo: add loading
         }
     }
@@ -30,7 +40,8 @@ export function Auth() {
             await firebaseAuthService.signInWithGoogle();
             navigate("/");
         } catch (error) {
-            alert(error);
+            if (!(error instanceof Error)) return;
+            triggerErrorAlert(error, setAlertData);
         }
     }
 
@@ -47,6 +58,8 @@ export function Auth() {
                 data.password
             );
 
+            if (!userData) throw new Error("User data is undefined");
+
             const uid = userData.user.uid;
             console.log(uid);
 
@@ -60,7 +73,8 @@ export function Auth() {
 
             navigate("/");
         } catch (error) {
-            alert(error);
+            if (!(error instanceof Error)) return;
+            triggerErrorAlert(error, setAlertData);
         }
     }
 

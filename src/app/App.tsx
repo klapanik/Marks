@@ -1,25 +1,46 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+} from "react-router-dom";
+import { useState } from "react";
 
 import { RootLayout } from "@/layouts/RootLayout";
 import { MainPage } from "@/pages/MainPage/MainPage";
 import { SubjectsPage } from "@/pages/SubjectsPage/SubjectsPage";
 import { Auth } from "@/widgets/Auth/Auth";
+import { MessageAlert } from "@/shared/ui/Alerts/MessageAlert";
+
+import { AlertProvider } from "./providers/AlertProvider";
 
 export function App() {
-    const router = createBrowserRouter(createRoutesFromElements(
-        <>
-            <Route path="/" element={<RootLayout />}>
-                <Route index element={<MainPage />} />
-                <Route path="/home" element={<MainPage />} />
+    const [alertData, setAlertData] = useState({
+        title: "Welcome!",
+        isOpen: false,
+    });
 
-                <Route path="/subjects" element={<SubjectsPage />} />
-            </Route>
+    const router = createBrowserRouter(
+        createRoutesFromElements(
+            <>
+                <Route path="/" element={<RootLayout />}>
+                    <Route index element={<MainPage />} />
+                    <Route path="/home" element={<MainPage />} />
 
-            <Route path="/auth" element={<Auth />} />
-        </>
-    ));
+                    <Route path="/subjects" element={<SubjectsPage />} />
+                </Route>
+
+                <Route path="/auth" element={<Auth />} />
+            </>
+        )
+    );
 
     return (
-        <RouterProvider router={router} />
-    )
+        <div className="relative">
+            <AlertProvider value={{ alertData, setAlertData }}>
+                <MessageAlert />
+                <RouterProvider router={router} />;
+            </AlertProvider>
+        </div>
+    );
 }

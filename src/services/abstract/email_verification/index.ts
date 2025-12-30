@@ -4,9 +4,7 @@ export async function emailVerification(email: string) {
     const url = `https://emailreputation.abstractapi.com/v1/?api_key=${API_KEY}&email=${email}`;
 
     try {
-        console.log(url);
         const responce = await fetch(url);
-        console.log(responce);
 
         if (!responce.ok) {
             throw new Error("Responce error");
