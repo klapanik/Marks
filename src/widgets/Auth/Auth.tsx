@@ -11,15 +11,14 @@ import { firebaseAuthService } from "@/services/firebase/auth";
 import { firestoreService } from "@/services/firebase/firestore";
 import { emailVerification } from "@/services/abstract/email_verification";
 
-import { useAlertData } from "@/app/providers/AlertContext";
+import { useAlertData } from "@/app/providers/AlertProvider";
 
 import { triggerErrorAlert } from "./lib/triggerErrorAlert";
 
 export function Auth() {
     const navigate = useNavigate();
 
-    const alertContext = useAlertData();
-    const { setAlertData } = alertContext;
+    const { setAlertData } = useAlertData();
 
     async function onLoginFormSubmit(data: LoginFormType) {
         if (!data) return;

@@ -1,11 +1,10 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Ban, BadgeCheck, CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAlertData } from "@/app/providers/AlertContext";
+import { useAlertData } from "@/app/providers/AlertProvider";
 
 export function MessageAlert() {
-    const alertContext = useAlertData();
-    const { setAlertData, alertData } = alertContext;
+    const { setAlertData, alertData } = useAlertData();
 
     const { title, description, icon, variant, isOpen } = alertData;
 

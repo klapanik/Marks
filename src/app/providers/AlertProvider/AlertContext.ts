@@ -1,7 +1,7 @@
 import type { AlertPropsType } from "@/shared/ui/Alerts/models";
 import type { Dispatch, SetStateAction } from "react";
 
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 export type AlertContextType = {
     alertData: AlertPropsType;
@@ -10,8 +10,4 @@ export type AlertContextType = {
 
 export const AlertContext = createContext<AlertContextType | null>(null);
 
-export const useAlertData = () => {
-    const context = useContext(AlertContext);
-    if (!context) throw new Error("Context is undefined");
-    return context;
-};
+

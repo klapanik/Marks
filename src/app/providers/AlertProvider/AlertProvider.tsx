@@ -1,10 +1,10 @@
 import { AlertContext, type AlertContextType } from "./AlertContext";
 
-type Props = {
+type AlertProviderProps = {
     children: React.ReactNode;
     value: AlertContextType;
 };
 
-export const AlertProvider = ({ value, children }: Props) => {
+export const AlertProvider = ({ value, children }: AlertProviderProps) => {
     return <AlertContext value={value}>{children}</AlertContext>;
 };
