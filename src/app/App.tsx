@@ -13,12 +13,15 @@ import { Auth } from "@/widgets/Auth/Auth";
 import { MessageAlert } from "@/shared/ui/Alerts/MessageAlert";
 
 import { AlertProvider } from "./providers/AlertProvider";
+import { LoadingProvider } from "./providers/LoadingProvider";
 
 export function App() {
     const [alertData, setAlertData] = useState({
         title: "Welcome!",
         isOpen: false,
     });
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -37,10 +40,12 @@ export function App() {
 
     return (
         <div className="relative">
-            <AlertProvider value={{ alertData, setAlertData }}>
-                <MessageAlert />
-                <RouterProvider router={router} />;
-            </AlertProvider>
+            <LoadingProvider value={{ isLoading, setIsLoading }}>
+                <AlertProvider value={{ alertData, setAlertData }}>
+                    <MessageAlert />
+                    <RouterProvider router={router} />;
+                </AlertProvider>
+            </LoadingProvider>
         </div>
     );
 }
