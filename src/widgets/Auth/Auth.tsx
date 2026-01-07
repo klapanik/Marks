@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
+import { onAuthStateChanged } from "firebase/auth";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/features/LoginForm/LoginForm";
@@ -10,37 +13,50 @@ import { BookOpen, GraduationCap } from "lucide-react";
 import { firebaseAuthService } from "@/services/firebase/auth";
 import { firestoreService } from "@/services/firebase/firestore";
 import { emailVerification } from "@/services/abstract/email_verification";
+import { auth } from "@/services/firebase/config";
 
 import { useAlertData } from "@/app/providers/AlertProvider";
+import { useLoading } from "@/app/providers/LoadingProvider";
 
 import { triggerErrorAlert } from "./lib/triggerErrorAlert";
 
 export function Auth() {
     const navigate = useNavigate();
 
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) navigate("/");
+        });
+    }, [navigate]);
+
     const { setAlertData } = useAlertData();
+    const { setIsLoading } = useLoading();
 
     async function onLoginFormSubmit(data: LoginFormType) {
         if (!data) return;
 
         try {
+            setIsLoading(true);
             await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
-            navigate("/");
         } catch (error) {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
-
-            // Todo: add loading
+        } finally {
+            triggerErrorAlert(null, setAlertData);
+            setIsLoading(false);
         }
     }
 
     async function signInWithGoogle() {
         try {
+            setIsLoading(true);
             await firebaseAuthService.signInWithGoogle();
-            navigate("/");
         } catch (error) {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
+        } finally {
+            triggerErrorAlert(null, setAlertData);
+            setIsLoading(false);
         }
     }
 
@@ -48,16 +64,22 @@ export function Auth() {
         if (!data) return;
 
         try {
+            setIsLoading(true);
+
             const isEmailValid = await emailVerification(data.email);
 
-            if (!isEmailValid) throw new Error("Email is not valid, please enter your real email");
+            if (!isEmailValid) {
+                throw new Error(`${JSON.stringify({ code: "auth/invalid-email" })}`);
+            }
 
             const userData = await firebaseAuthService.createUserWithEmailAndPassword(
                 data.email,
                 data.password
             );
 
-            if (!userData) throw new Error("User data is undefined");
+            if (!userData) {
+                throw new Error(`${JSON.stringify({ code: "auth/invalid-provider-data" })}`);
+            }
 
             const uid = userData.user.uid;
             console.log(uid);
@@ -69,11 +91,12 @@ export function Auth() {
                 form: data.form,
                 letter: data.letter ?? "",
             });
-
-            navigate("/");
         } catch (error) {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
+        } finally {
+            triggerErrorAlert(null, setAlertData);
+            setIsLoading(false);
         }
     }
 
