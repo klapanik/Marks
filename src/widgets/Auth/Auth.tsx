@@ -37,12 +37,12 @@ export function Auth() {
 
         try {
             setIsLoading(true);
+            triggerErrorAlert(null, setAlertData);
             await firebaseAuthService.signInWithEmailAndPassword(data.email, data.password);
         } catch (error) {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
         } finally {
-            triggerErrorAlert(null, setAlertData);
             setIsLoading(false);
         }
     }
@@ -50,12 +50,12 @@ export function Auth() {
     async function signInWithGoogle() {
         try {
             setIsLoading(true);
+            triggerErrorAlert(null, setAlertData);
             await firebaseAuthService.signInWithGoogle();
         } catch (error) {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
         } finally {
-            triggerErrorAlert(null, setAlertData);
             setIsLoading(false);
         }
     }
@@ -65,6 +65,7 @@ export function Auth() {
 
         try {
             setIsLoading(true);
+            triggerErrorAlert(null, setAlertData);
 
             const isEmailValid = await emailVerification(data.email);
 
@@ -74,7 +75,7 @@ export function Auth() {
 
             const userData = await firebaseAuthService.createUserWithEmailAndPassword(
                 data.email,
-                data.password
+                data.password,
             );
 
             if (!userData) {
@@ -95,7 +96,6 @@ export function Auth() {
             if (!(error instanceof Error)) return;
             triggerErrorAlert(error, setAlertData);
         } finally {
-            triggerErrorAlert(null, setAlertData);
             setIsLoading(false);
         }
     }
