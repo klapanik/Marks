@@ -10,15 +10,20 @@ import { RootLayout } from "@/layouts/RootLayout";
 import { MainPage } from "@/pages/MainPage/MainPage";
 import { SubjectsPage } from "@/pages/SubjectsPage/SubjectsPage";
 import { Auth } from "@/widgets/Auth/Auth";
+
 import { MessageAlert } from "@/shared/ui/Alerts/MessageAlert";
+import { Loader } from "@/shared/ui/Loading/Loader";
 
 import { AlertProvider } from "./providers/AlertProvider";
+import { LoadingProvider } from "./providers/LoadingProvider";
 
 export function App() {
     const [alertData, setAlertData] = useState({
         title: "Welcome!",
         isOpen: false,
     });
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -37,10 +42,13 @@ export function App() {
 
     return (
         <div className="relative">
-            <AlertProvider value={{ alertData, setAlertData }}>
-                <MessageAlert />
-                <RouterProvider router={router} />;
-            </AlertProvider>
+            <LoadingProvider value={{ isLoading, setIsLoading }}>
+                <AlertProvider value={{ alertData, setAlertData }}>
+                    <Loader />
+                    <MessageAlert />
+                    <RouterProvider router={router} />
+                </AlertProvider>
+            </LoadingProvider>
         </div>
     );
 }
