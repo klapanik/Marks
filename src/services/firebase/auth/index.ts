@@ -1,12 +1,19 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+} from "firebase/auth";
 import { auth, googleProvider } from "../config";
 
 class FirebaseAuth {
     async createUserWithEmailAndPassword(email: string, password: string) {
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userData = await createUserWithEmailAndPassword(auth, email, password);
+            return userData;
         } catch (error) {
-            throw new Error(`Error in signing in: ${error}`);
+            if (typeof error !== "object") return;
+            throw new Error(`${JSON.stringify(error)}`);
         }
     }
 
@@ -14,15 +21,17 @@ class FirebaseAuth {
         try {
             await signInWithPopup(auth, googleProvider);
         } catch (error) {
-            throw new Error(`Error in signing in: ${error}`);
+            if (typeof error !== "object") return;
+            throw new Error(`${JSON.stringify(error)}`);
         }
     }
 
     async signInWithEmailAndPassword(email: string, password: string) {
         try {
-            await signInWithEmailAndPassword(auth, email, password)
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            throw new Error(`Error in signing in: ${error}`);
+            if (typeof error !== "object") return;
+            throw new Error(`${JSON.stringify(error)}`);
         }
     }
 
