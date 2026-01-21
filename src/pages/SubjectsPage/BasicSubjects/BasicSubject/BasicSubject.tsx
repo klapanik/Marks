@@ -5,33 +5,47 @@ import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
-    subject: {
-        name: string,
-        id: string
-    } | DocumentData
-}
+    subject:
+        | {
+              name: string;
+              id: string;
+          }
+        | DocumentData;
+    handleAdding: (subjectName: string, id: string | number) => void;
+};
 
-export function BasicSubject({ subject }: Props) {
+export function BasicSubject({ subject, handleAdding }: Props) {
     const [isAdded, setIsAdded] = useState(false);
 
+    async function handleSubjectAdding() {
+        const responce = await handleAdding(subject.name, subject.id) ?? {};
+        if ("status" in responce && responce.status === "error") return;
+        setIsAdded((prev) => !prev);
+    }
+
     return (
-        <Item key={subject.id} className={`${isAdded ? 'bg-primary-transparent border-border' : ''} p-3 rounded-xl`}>
+        <Item
+            key={subject.id}
+            className={`${isAdded ? "bg-primary-transparent border-border" : ""} p-3 rounded-xl`}
+        >
             <ItemContent>
-                <ItemTitle
-                    className={`font-medium text-base ${isAdded ? 'text-primary' : ''}`}>
-                    {subject.name}</ItemTitle>
+                <ItemTitle className={`font-medium text-base ${isAdded ? "text-primary" : ""}`}>
+                    {subject.name}
+                </ItemTitle>
             </ItemContent>
             <ItemActions>
-                {isAdded ?
-                    <Check className={`size-4 ${isAdded ? 'text-primary' : ''}`} />
-                    :
+                {isAdded ? (
+                    <Check className={`size-4 ${isAdded ? "text-primary" : ""}`} />
+                ) : (
                     <Button
                         variant="ghost"
-                        onClick={() => { setIsAdded(prev => !prev) }}
-                        className="cursor-pointer hover:bg-transparent p-0 size-4">
+                        onClick={handleSubjectAdding}
+                        className="cursor-pointer hover:bg-transparent p-0 size-4"
+                    >
                         <Plus className="size-4" />
-                    </Button>}
+                    </Button>
+                )}
             </ItemActions>
         </Item>
-    )
+    );
 }
