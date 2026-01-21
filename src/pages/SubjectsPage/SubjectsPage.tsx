@@ -16,6 +16,9 @@ import { useAlertData } from "@/app/providers/AlertProvider";
 export function SubjectsPage() {
     const { setAlertData } = useAlertData();
     const [basicSubjects, setBasicSubjects] = useState<DocumentData[]>([]);
+    const [alreadyAddedBasicSubjects, setAlreadyAddedBasicSubjects] = useState([]);
+
+    const userUid = firebaseAuthService.getUserUid();
 
     useEffect(() => {
         async function getBasicSubject() {
@@ -28,9 +31,39 @@ export function SubjectsPage() {
         getBasicSubject();
     }, []);
 
+    useEffect(() => {
+        async function getAlreadyAddedBasicSubjects() {
+            try {
+                if (!userUid) return;
+                const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
+                if (!userDoc) return;
+
+                const userSubjects = userDoc.subjects ?? [];
+
+                const filteredSubjects = userSubjects.filter(
+                    (subject: { subjectName: string; id: string | number }) =>
+                        subject.id.toString()[0] === "b",
+                ); // (already added subjects)
+
+                setAlreadyAddedBasicSubjects(filteredSubjects);
+            } catch (error) {
+                if (typeof error !== "object" || error === null || !("message" in error)) return;
+
+                setAlertData((prev) => ({
+                    ...prev,
+                    title: error.message as string,
+                    description: "",
+                    variant: "destructive",
+                    isOpen: true,
+                }));
+            }
+        }
+
+        getAlreadyAddedBasicSubjects();
+    }, [userUid, setAlertData]);
+
     async function handleSubjectAdding(subjectName: string, id: string | number) {
         try {
-            const userUid = firebaseAuthService.getUserUid();
             if (!userUid) return;
 
             const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
@@ -83,7 +116,11 @@ export function SubjectsPage() {
 
             {/* <YourSubjects /> */}
             <AddNewSubject />
-            <BasicSubjects basicSubjects={basicSubjects} handleAdding={handleSubjectAdding} />
+            <BasicSubjects
+                basicSubjects={basicSubjects}
+                handleAdding={handleSubjectAdding}
+                alreadyAddedBasicSubjects={alreadyAddedBasicSubjects}
+            />
         </section>
     );
 }

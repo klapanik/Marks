@@ -12,13 +12,14 @@ type Props = {
           }
         | DocumentData;
     handleAdding: (subjectName: string, id: string | number) => void;
+    isAlreadyAdded: boolean;
 };
 
-export function BasicSubject({ subject, handleAdding }: Props) {
-    const [isAdded, setIsAdded] = useState(false);
+export function BasicSubject({ subject, handleAdding, isAlreadyAdded }: Props) {
+    const [isAdded, setIsAdded] = useState(!!isAlreadyAdded);
 
     async function handleSubjectAdding() {
-        const responce = await handleAdding(subject.name, subject.id) ?? {};
+        const responce = (await handleAdding(subject.name, subject.id)) ?? {};
         if ("status" in responce && responce.status === "error") return;
         setIsAdded((prev) => !prev);
     }
