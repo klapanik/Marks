@@ -15,7 +15,6 @@ export function RootLayout() {
             if (user) {
                 const uid = user.uid;
                 console.log(uid);
-                navigate('/');
             } else {
                 navigate('/auth');
             }
