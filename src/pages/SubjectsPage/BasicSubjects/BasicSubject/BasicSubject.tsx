@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Item, ItemActions, ItemContent, ItemTitle } from "@/components/ui/item";
 import type { DocumentData } from "firebase/firestore";
 import { Check, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
     subject:
@@ -16,7 +16,15 @@ type Props = {
 };
 
 export function BasicSubject({ subject, handleAdding, isAlreadyAdded }: Props) {
-    const [isAdded, setIsAdded] = useState(!!isAlreadyAdded);
+    const [isAdded, setIsAdded] = useState(false);
+
+    useEffect(() => {
+        function setIsAlreadyAdded() {
+            setIsAdded(isAlreadyAdded);
+        }
+
+        setIsAlreadyAdded();
+    }, [setIsAdded, isAlreadyAdded]);
 
     async function handleSubjectAdding() {
         const responce = (await handleAdding(subject.name, subject.id)) ?? {};
