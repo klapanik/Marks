@@ -108,14 +108,14 @@ export function SubjectsPage() {
     }
 
     return (
-        <section>
+        <section className="flex flex-col gap-7">
             <div>
                 <h2 className="font-bold text-3xl">Предметы</h2>
                 <p className="text-muted-foreground">Выберите предметы, которые вы изучаете</p>
             </div>
 
             {/* <YourSubjects /> */}
-            <AddNewSubject />
+            <AddNewSubject basicSubjects={basicSubjects} onSubmit={handleSubjectAdding} />
             <BasicSubjects
                 basicSubjects={basicSubjects}
                 handleAdding={handleSubjectAdding}
