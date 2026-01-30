@@ -34,7 +34,7 @@ export function SubjectsPage() {
                 const data: DocumentData[] = await firestoreService.getAllDocs(
                     BASIC_SUBJECT_COLLECTION_NAME,
                 );
-                
+
                 setBasicSubjects(data);
                 setIsLoading(false);
             } catch (error) {
@@ -52,7 +52,7 @@ export function SubjectsPage() {
         }
 
         getBasicSubject();
-    }, [setIsLoading]);
+    }, [setIsLoading, setAlertData]);
 
     useEffect(() => {
         async function getAlreadyAddedBasicSubjects() {
