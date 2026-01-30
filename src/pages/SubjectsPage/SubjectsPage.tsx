@@ -13,9 +13,11 @@ import { BasicSubjects } from "./BasicSubjects/BasicSubjects";
 import { UsersSubjects } from "./UserSubjects/UserSubjects";
 
 import { useAlertData } from "@/app/providers/AlertProvider";
+import { useLoading } from "@/app/providers/LoadingProvider";
 
 export function SubjectsPage() {
     const { setAlertData } = useAlertData();
+    const { setIsLoading } = useLoading();
 
     const [basicSubjects, setBasicSubjects] = useState<DocumentData[]>([]);
     const [alreadyAddedBasicSubjects, setAlreadyAddedBasicSubjects] = useState([]);
@@ -27,19 +29,23 @@ export function SubjectsPage() {
 
     useEffect(() => {
         async function getBasicSubject() {
+            setIsLoading(true);
             const data: DocumentData[] = await firestoreService.getAllDocs(
                 BASIC_SUBJECT_COLLECTION_NAME,
             );
             setBasicSubjects(data);
+            setIsLoading(false);
         }
 
         getBasicSubject();
-    }, []);
+    }, [setIsLoading]);
 
     useEffect(() => {
         async function getAlreadyAddedBasicSubjects() {
             try {
                 if (!userUid) return;
+                setIsLoading(true);
+
                 const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
                 if (!userDoc) return;
 
@@ -51,8 +57,10 @@ export function SubjectsPage() {
                 ); // (already added subjects)
 
                 setAlreadyAddedBasicSubjects(filteredSubjects);
+                setIsLoading(false);
             } catch (error) {
                 if (typeof error !== "object" || error === null || !("message" in error)) return;
+                setIsLoading(false);
 
                 setAlertData((prev) => ({
                     ...prev,
@@ -65,22 +73,25 @@ export function SubjectsPage() {
         }
 
         getAlreadyAddedBasicSubjects();
-    }, [userUid, setAlertData, version]);
+    }, [userUid, setAlertData, version, setIsLoading]);
 
     useEffect(() => {
         async function getAllUserSubjects() {
             try {
                 if (!userUid) return;
-                const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
+                setIsLoading(true);
 
+                const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
                 if (!userDoc) {
                     throw new Error("Не найдено вашей учётной записи");
                 }
 
                 const userSubjects = userDoc.subjects ?? [];
                 setAllUserSubjects(userSubjects);
+                setIsLoading(false);
             } catch (error) {
                 if (typeof error !== "object" || error === null || !("message" in error)) return;
+                setIsLoading(false);
 
                 setAlertData((prev) => ({
                     ...prev,
@@ -93,12 +104,12 @@ export function SubjectsPage() {
         }
 
         getAllUserSubjects();
-    }, [setAlertData, userUid, version]);
+    }, [setAlertData, userUid, version, setIsLoading]);
 
-    // todo: add loaders
     async function handleSubjectAdding(subjectName: string, id: string | number) {
         try {
             if (!userUid) return;
+            setIsLoading(true);
 
             const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
             if (!userDoc) {
@@ -128,10 +139,12 @@ export function SubjectsPage() {
             }));
 
             setVersion((v) => v + 1);
+            setIsLoading(false);
 
             return { status: "success" };
         } catch (error) {
             if (typeof error !== "object" || error === null || !("message" in error)) return;
+            setIsLoading(false);
 
             setAlertData((prev) => ({
                 ...prev,
@@ -148,6 +161,7 @@ export function SubjectsPage() {
     async function handleDeletingSubject(id: string | number) {
         try {
             if (!userUid) return;
+            setIsLoading(true);
 
             const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
             if (!userDoc) {
@@ -183,8 +197,10 @@ export function SubjectsPage() {
             }));
 
             setVersion((v) => v + 1);
+            setIsLoading(false);
         } catch (error) {
             if (typeof error !== "object" || error === null || !("message" in error)) return;
+            setIsLoading(false);
 
             setAlertData((prev) => ({
                 ...prev,
