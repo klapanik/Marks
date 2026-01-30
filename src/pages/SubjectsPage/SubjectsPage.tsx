@@ -21,6 +21,8 @@ export function SubjectsPage() {
     const [alreadyAddedBasicSubjects, setAlreadyAddedBasicSubjects] = useState([]);
     const [allUserSubjects, setAllUserSubjects] = useState([]);
 
+    const [version, setVersion] = useState(0);
+
     const userUid = firebaseAuthService.getUserUid();
 
     useEffect(() => {
@@ -63,7 +65,7 @@ export function SubjectsPage() {
         }
 
         getAlreadyAddedBasicSubjects();
-    }, [userUid, setAlertData]);
+    }, [userUid, setAlertData, version]);
 
     useEffect(() => {
         async function getAllUserSubjects() {
@@ -91,8 +93,9 @@ export function SubjectsPage() {
         }
 
         getAllUserSubjects();
-    }, [setAlertData, userUid]);
+    }, [setAlertData, userUid, version]);
 
+    // todo: add loaders
     async function handleSubjectAdding(subjectName: string, id: string | number) {
         try {
             if (!userUid) return;
@@ -123,6 +126,8 @@ export function SubjectsPage() {
                 variant: "default",
                 isOpen: true,
             }));
+
+            setVersion((v) => v + 1);
 
             return { status: "success" };
         } catch (error) {
@@ -176,6 +181,8 @@ export function SubjectsPage() {
                 variant: "default",
                 isOpen: true,
             }));
+
+            setVersion((v) => v + 1);
         } catch (error) {
             if (typeof error !== "object" || error === null || !("message" in error)) return;
 
