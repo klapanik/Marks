@@ -10,13 +10,16 @@ import { firebaseAuthService } from "@/services/firebase/auth";
 
 import { AddNewSubject } from "./AddNewSubject/AddNewSubject";
 import { BasicSubjects } from "./BasicSubjects/BasicSubjects";
+import { UsersSubjects } from "./UserSubjects/UserSubjects";
 
 import { useAlertData } from "@/app/providers/AlertProvider";
 
 export function SubjectsPage() {
     const { setAlertData } = useAlertData();
+
     const [basicSubjects, setBasicSubjects] = useState<DocumentData[]>([]);
     const [alreadyAddedBasicSubjects, setAlreadyAddedBasicSubjects] = useState([]);
+    const [allUserSubjects, setAllUserSubjects] = useState([]);
 
     const userUid = firebaseAuthService.getUserUid();
 
@@ -62,12 +65,42 @@ export function SubjectsPage() {
         getAlreadyAddedBasicSubjects();
     }, [userUid, setAlertData]);
 
+    useEffect(() => {
+        async function getAllUserSubjects() {
+            try {
+                if (!userUid) return;
+                const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
+
+                if (!userDoc) {
+                    throw new Error("Не найдено вашей учётной записи");
+                }
+
+                const userSubjects = userDoc.subjects ?? [];
+                setAllUserSubjects(userSubjects);
+            } catch (error) {
+                if (typeof error !== "object" || error === null || !("message" in error)) return;
+
+                setAlertData((prev) => ({
+                    ...prev,
+                    title: error.message as string,
+                    description: "",
+                    variant: "destructive",
+                    isOpen: true,
+                }));
+            }
+        }
+
+        getAllUserSubjects();
+    }, [setAlertData, userUid]);
+
     async function handleSubjectAdding(subjectName: string, id: string | number) {
         try {
             if (!userUid) return;
 
             const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
-            if (!userDoc) return;
+            if (!userDoc) {
+                throw new Error("Пользователь не найден!");
+            }
 
             const prevSubjects = userDoc.subjects ?? [];
 
@@ -107,6 +140,55 @@ export function SubjectsPage() {
         }
     }
 
+    async function handleDeletingSubject(id: string | number) {
+        try {
+            if (!userUid) return;
+
+            const userDoc = await firestoreService.getDocById(USERS_COLLECTION_NAME, userUid);
+            if (!userDoc) {
+                throw new Error("Пользователь не найден!");
+            }
+
+            const userSubjects = userDoc.subjects ?? [];
+
+            const isInDataBase = !!userSubjects.find(
+                (item: { subjectName: string; id: string | number }) => item.id === id,
+            );
+
+            if (!isInDataBase) {
+                throw new Error(
+                    "Предмета нет в вашем списке, произошла ошибка обновите странцу и попробуйте позже",
+                );
+            }
+
+            const filteredSubjects = userSubjects.filter(
+                (item: { subjectName: string; id: string | number }) => item.id !== id,
+            );
+
+            await firestoreService.updateDoc(USERS_COLLECTION_NAME, userUid, {
+                subjects: [...filteredSubjects],
+            });
+
+            setAlertData((prev) => ({
+                ...prev,
+                title: "Успешно!",
+                description: "Предмет удалён из вашего списка!",
+                variant: "default",
+                isOpen: true,
+            }));
+        } catch (error) {
+            if (typeof error !== "object" || error === null || !("message" in error)) return;
+
+            setAlertData((prev) => ({
+                ...prev,
+                title: error.message as string,
+                description: "",
+                variant: "destructive",
+                isOpen: true,
+            }));
+        }
+    }
+
     return (
         <section className="flex flex-col gap-7">
             <div>
@@ -114,8 +196,13 @@ export function SubjectsPage() {
                 <p className="text-muted-foreground">Выберите предметы, которые вы изучаете</p>
             </div>
 
-            {/* <YourSubjects /> */}
+            <UsersSubjects
+                allUserSubjects={allUserSubjects}
+                handleDeleting={handleDeletingSubject}
+            />
+
             <AddNewSubject basicSubjects={basicSubjects} onSubmit={handleSubjectAdding} />
+
             <BasicSubjects
                 basicSubjects={basicSubjects}
                 handleAdding={handleSubjectAdding}
