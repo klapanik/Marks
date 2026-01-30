@@ -29,12 +29,26 @@ export function SubjectsPage() {
 
     useEffect(() => {
         async function getBasicSubject() {
-            setIsLoading(true);
-            const data: DocumentData[] = await firestoreService.getAllDocs(
-                BASIC_SUBJECT_COLLECTION_NAME,
-            );
-            setBasicSubjects(data);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                const data: DocumentData[] = await firestoreService.getAllDocs(
+                    BASIC_SUBJECT_COLLECTION_NAME,
+                );
+                
+                setBasicSubjects(data);
+                setIsLoading(false);
+            } catch (error) {
+                if (typeof error !== "object" || error === null || !("message" in error)) return;
+                setIsLoading(false);
+
+                setAlertData((prev) => ({
+                    ...prev,
+                    title: error.message as string,
+                    description: "",
+                    variant: "destructive",
+                    isOpen: true,
+                }));
+            }
         }
 
         getBasicSubject();
