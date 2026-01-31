@@ -1,6 +1,7 @@
 import type { DocumentData } from "firebase/firestore";
 import { BookOpen } from "lucide-react";
 import { UserSubject } from "./UserSubject/UserSubject";
+import { EmptyUsersSubjects } from "../EmptyUserSubjects/EmptyUsersSubjects";
 
 type Props = {
     allUserSubjects: DocumentData[] | { name: string; id: string | number }[];
@@ -20,14 +21,18 @@ export function UsersSubjects({ allUserSubjects, handleDeleting }: Props) {
                 </p>
             </div>
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3">
-                {allUserSubjects.map((subject) => (
-                    <UserSubject
-                        key={subject.id}
-                        subject={subject}
-                        handleDeleting={handleDeleting}
-                    />
-                ))}
+            <div className={`${allUserSubjects.length === 0 ? 'px-10' : 'grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-3'}`}>
+                {allUserSubjects.length === 0 ? (
+                    <EmptyUsersSubjects />
+                ) : (
+                    allUserSubjects.map((subject) => (
+                        <UserSubject
+                            key={subject.id}
+                            subject={subject}
+                            handleDeleting={handleDeleting}
+                        />
+                    ))
+                )}
             </div>
         </section>
     );
