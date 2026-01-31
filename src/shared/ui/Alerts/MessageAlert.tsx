@@ -1,6 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Ban, BadgeCheck, CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 import { useAlertData } from "@/app/providers/AlertProvider";
 
 export function MessageAlert() {
@@ -19,20 +20,24 @@ export function MessageAlert() {
                  } 
                  ${
                      variant === "destructive"
-                         ? "bg-[#ff00002e] border-destructive"
-                         : "bg-white border-white"
+                         ? "bg-[#ffc6c6] border-destructive"
+                         : "bg-white border-primary"
                  }
             `}
         >
             <Button
                 variant="ghost"
-                onClick={() => setAlertData(prev => ({ ...prev, isOpen: false }))}
-                className="hover:bg-[#ff00002e] absolute right-1 top-1 cursor-pointer"
+                onClick={() => setAlertData((prev) => ({ ...prev, isOpen: false }))}
+                className={`${
+                    variant === "destructive"
+                        ? "hover:bg-[#ff00002e]"
+                        : "hover:bg-primary hover:text-white"
+                } absolute right-1 top-1 cursor-pointer`}
             >
                 <CircleX />
             </Button>
 
-            {icon ?? variant === "destructive" ? <Ban /> : <BadgeCheck />}
+            {(icon ?? variant === "destructive") ? <Ban /> : <BadgeCheck />}
             <AlertTitle>{title}</AlertTitle>
             <AlertDescription>{description ?? ""}</AlertDescription>
         </Alert>

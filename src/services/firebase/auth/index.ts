@@ -7,6 +7,11 @@ import {
 import { auth, googleProvider } from "../config";
 
 class FirebaseAuth {
+    getUserUid() {
+        if (!auth.currentUser) return null;
+        return auth.currentUser.uid;
+    }
+
     async createUserWithEmailAndPassword(email: string, password: string) {
         try {
             const userData = await createUserWithEmailAndPassword(auth, email, password);
