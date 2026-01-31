@@ -28,6 +28,15 @@ export function SubjectsPage() {
     const userUid = firebaseAuthService.getUserUid();
 
     useEffect(() => {
+        setTimeout(() => {
+            setAlertData((prev) => ({
+                ...prev,
+                isOpen: false,
+            }));
+        }, 5000);
+    }, [setAlertData, version]);
+
+    useEffect(() => {
         async function getBasicSubject() {
             try {
                 setIsLoading(true);
