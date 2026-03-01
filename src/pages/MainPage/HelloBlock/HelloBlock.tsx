@@ -1,6 +1,6 @@
 import "./HelloBlock.css";
 
-export function HelloBlock() {
+export function HelloBlock({ userName }: { userName: string }) {
     return (
         <section
             className="rounded-lg p-6 w-full flex justify-between gradient-block 
@@ -9,8 +9,7 @@ export function HelloBlock() {
             <div>
                 <h2 className="font-bold text-2xl">
                     Добро пожаловать,
-                    <span className="cursor-pointer flowtext"> Константин</span>
-                    !
+                    <span className="cursor-pointer flowtext"> {userName}</span>!
                 </h2>
                 <p className="text-gray-500">9А класс</p>
             </div>
